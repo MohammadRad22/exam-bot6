@@ -14,7 +14,7 @@ from telegram.ext import (
 # ==============================
 TOKEN = os.environ.get("TELEGRAM_TOKEN", "8475437543:AAG75xruJgLyAJnyD7WGsZlpsZu3dWs_ejE")
 ADMIN_ID = 677533280  # آیدی عددی ادمین
-WEBHOOK_URL = os.environ.get("WEBHOOK_URL", "https://exam-bot6-1.onrender.com")  # بدون اسلش انتهایی
+WEBHOOK_URL = os.environ.get("WEBHOOK_URL", "https://exam-bot6-2.onrender.com")  # بدون اسلش انتهایی
 RESULTS_FILE = "results.csv"
 EXAM_DURATION = 15 * 60  # ۱۵ دقیقه
 
