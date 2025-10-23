@@ -12,7 +12,7 @@ from telegram.ext import (
 # ==============================
 # 🔹 تنظیمات اصلی
 # ==============================
-TOKEN = os.environ.get("TELEGRAM_TOKEN", "8475437543:AAG75xruJgLyAJnyD7WGsZlpsZu3dWs_ejE")  # استفاده از متغیر محیطی
+TOKEN = os.environ.get("TELEGRAM_TOKEN", "8475437543:AAG75xruJgLyAJnyD7WGsZlpsZu3dWs_ejE")
 ADMIN_ID = 677533280  # آیدی عددی ادمین
 WEBHOOK_URL = os.environ.get("WEBHOOK_URL", "https://exam-bot6-1.onrender.com")  # بدون اسلش انتهایی
 RESULTS_FILE = "results.csv"
@@ -30,7 +30,7 @@ def home():
 @flask_app.route(f"/{TOKEN}", methods=["POST"])
 async def webhook():
     update = Update.de_json(request.get_json(force=True), app.bot)
-    await app.process_update(update)  # استفاده مستقیم از await
+    await app.process_update(update)
     return "OK", 200
 
 # ==============================
@@ -239,9 +239,8 @@ async def main():
     await app.initialize()
     # تنظیم Webhook
     await set_webhook()
-    # اجرای سرور Flask
-    port = int(os.environ.get("PORT", 10000))
-    flask_app.run(host="0.0.0.0", port=port)
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    # اجرای Webhook به صورت غیرهمزمان
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(main())
