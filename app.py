@@ -12,9 +12,9 @@ from telegram.ext import (
 # ==============================
 # 🔹 تنظیمات اصلی
 # ==============================
-TOKEN = "8475437543:AAG75xruJgLyAJnyD7WGsZlpsZu3dWs_ejE"
-ADMIN_ID = 677533280  # آیدی عددی ادمین (خودت)
-WEBHOOK_URL = "https://exam-bot6-1.onrender.com/"  # 🔸آدرس Render خودت
+TOKEN = os.environ.get("TELEGRAM_TOKEN", "8475437543:AAG75xruJgLyAJnyD7WGsZlpsZu3dWs_ejE")  # استفاده از متغیر محیطی
+ADMIN_ID = 677533280  # آیدی عددی ادمین
+WEBHOOK_URL = os.environ.get("WEBHOOK_URL", "https://exam-bot6-1.onrender.com")  # بدون اسلش انتهایی
 RESULTS_FILE = "results.csv"
 EXAM_DURATION = 15 * 60  # ۱۵ دقیقه
 
@@ -28,9 +28,9 @@ def home():
     return "✅ Bot is running!"
 
 @flask_app.route(f"/{TOKEN}", methods=["POST"])
-def webhook():
+async def webhook():
     update = Update.de_json(request.get_json(force=True), app.bot)
-    asyncio.get_event_loop().create_task(app.process_update(update))
+    await app.process_update(update)  # استفاده مستقیم از await
     return "OK", 200
 
 # ==============================
@@ -228,11 +228,20 @@ app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
 app.add_handler(CallbackQueryHandler(button_handler))
 
 async def set_webhook():
-    await app.bot.set_webhook(f"{WEBHOOK_URL}/{TOKEN}")
-    print("✅ Webhook set successfully!")
+    try:
+        await app.bot.set_webhook(f"{WEBHOOK_URL}/{TOKEN}")
+        print("✅ Webhook set successfully!")
+    except Exception as e:
+        print(f"❌ Error setting webhook: {e}")
+
+async def main():
+    # مقداردهی اولیه اپلیکیشن
+    await app.initialize()
+    # تنظیم Webhook
+    await set_webhook()
+    # اجرای سرور Flask
+    port = int(os.environ.get("PORT", 10000))
+    flask_app.run(host="0.0.0.0", port=port)
 
 if __name__ == "__main__":
-    import uvicorn
-    port = int(os.environ.get("PORT", 10000))
-    asyncio.run(set_webhook())
-    uvicorn.run("app:flask_app", host="0.0.0.0", port=port)
+    asyncio.run(main())
