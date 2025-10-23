@@ -14,7 +14,7 @@ from telegram.ext import (
 # ==============================
 TOKEN = "8475437543:AAG75xruJgLyAJnyD7WGsZlpsZu3dWs_ejE"
 ADMIN_ID = 677533280  # آیدی عددی ادمین (خودت)
-WEBHOOK_URL = "https://exam-bot6.onrender.com"  # 🔸آدرس Render خودت
+WEBHOOK_URL = "https://exam-bot6-1.onrender.com/"  # 🔸آدرس Render خودت
 RESULTS_FILE = "results.csv"
 EXAM_DURATION = 15 * 60  # ۱۵ دقیقه
 
